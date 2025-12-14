@@ -1,4 +1,4 @@
-import React, { useState, useRef, useEffect } from 'react';
+import React, { useState, useRef, useEffect, useMemo } from 'react';
 import { createRoot } from 'react-dom/client';
 import { GoogleGenAI } from "@google/genai";
 import JSZip from 'https://esm.sh/jszip@3.10.1';
@@ -22,7 +22,10 @@ Rules:
 1. Manifest V3 only.
 2. Minimal permissions (avoid <all_urls> unless absolutely necessary).
 3. No eval, no remote code.
-4. "binary-description" for icons MUST follow this format: 'PNG icon, SIZE x SIZE, solid HEX_COLOR background, text "INITIALS" centered.' (e.g. 'PNG icon, 48x48, solid #3C78DC background, text "EX" centered.'). Always generate icons for sizes 16, 48, and 128.
+4. "binary-description" for icons MUST follow this format: 'PNG icon, SIZE x SIZE, style [flat|gradient], background HEX [HEX], foreground HEX, text "INITIALS" centered.' 
+   Example 1: 'PNG icon, 48x48, style gradient, background #4F46E5 #9333EA, foreground #FFFFFF, text "EX" centered.'
+   Example 2: 'PNG icon, 16x16, style flat, background #3C78DC, foreground #FFFFFF, text "E" centered.'
+   Always generate icons for sizes 16, 48, and 128.
 `;
 
 const EXAMPLE_PROMPTS = [
@@ -38,6 +41,11 @@ const ShieldIcon = () => <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24
 const PlayIcon = () => <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M14.752 11.168l-3.197-2.132A1 1 0 0010 9.87v4.263a1 1 0 001.555.832l3.197-2.132a1 1 0 000-1.664z" /><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M21 12a9 9 0 11-18 0 9 9 0 0118 0z" /></svg>;
 const DownloadIcon = () => <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4" /></svg>;
 const SparklesIcon = () => <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 3v4M3 5h4M6 17v4m-2-2h4m5-16l2.286 6.857L21 12l-5.714 2.143L13 21l-2.286-6.857L5 12l5.714-2.143L13 3z" /></svg>;
+const CopyIcon = () => <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M8 5H6a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2v-1M8 5a2 2 0 002 2h2a2 2 0 002-2M8 5a2 2 0 012-2h2a2 2 0 012 2m0 0h2a2 2 0 012 2v3m2 4H10m0 0l3-3m-3 3l3 3" /></svg>;
+const CheckIcon = () => <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" /></svg>;
+const TrashIcon = () => <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" /></svg>;
+const ChevronDownIcon = () => <svg className="w-3 h-3" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" /></svg>;
+const ChevronRightIcon = () => <svg className="w-3 h-3" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" /></svg>;
 
 // File Types Icons
 const JsIcon = () => <svg className="w-4 h-4 text-yellow-400" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M16 18l6-6-6-6"/><path d="M8 6l-6 6 6 6"/></svg>;
@@ -58,15 +66,26 @@ function App() {
   const [error, setError] = useState<string | null>(null);
   const [selectedFile, setSelectedFile] = useState<any>(null);
   const [activeTab, setActiveTab] = useState<'code' | 'testing' | 'security'>('code');
+  const [copyFeedback, setCopyFeedback] = useState(false);
+  
+  // File explorer collapsing state
+  const [collapsedGroups, setCollapsedGroups] = useState<Record<string, boolean>>({});
 
   const generateExtension = async () => {
     if (!prompt.trim()) return;
+    
+    // Check if result exists and confirm with user before proceeding
+    if (result) {
+        const confirmed = window.confirm("Generating a new extension will discard your current files. Are you sure you want to proceed?");
+        if (!confirmed) return;
+    }
     
     setLoading(true);
     setLoadingStep("Initializing builder...");
     setError(null);
     setResult(null);
     setSelectedFile(null);
+    setCollapsedGroups({}); // Reset collapse state
 
     // Simulation of progress steps
     const steps = [
@@ -163,6 +182,18 @@ function App() {
     URL.revokeObjectURL(url);
   };
 
+  const handleCopyCode = () => {
+    if (selectedFile?.content) {
+      navigator.clipboard.writeText(selectedFile.content);
+      setCopyFeedback(true);
+      setTimeout(() => setCopyFeedback(false), 2000);
+    }
+  };
+
+  const handleClearPrompt = () => {
+    setPrompt("");
+  };
+
   const getFileIcon = (filename: string) => {
     if (filename.endsWith('.js') || filename.endsWith('.ts') || filename.endsWith('.jsx') || filename.endsWith('.tsx')) return <JsIcon />;
     if (filename.endsWith('.html')) return <HtmlIcon />;
@@ -171,6 +202,44 @@ function App() {
     if (filename.endsWith('.png') || filename.endsWith('.jpg') || filename.endsWith('.ico')) return <ImageIcon />;
     if (filename.endsWith('.md')) return <MarkdownIcon />;
     return <DefaultFileIcon />;
+  };
+
+  // Group files logic
+  const groupedFiles = useMemo<Record<string, any[]>>(() => {
+    if (!result?.files) return {} as Record<string, any[]>;
+    
+    const groups: Record<string, any[]> = {
+      'Config': [],
+      'Scripts': [],
+      'Views': [],
+      'Styles': [],
+      'Images': [],
+      'Misc': []
+    };
+
+    result.files.forEach((file: any) => {
+      const path = file.path.toLowerCase();
+      if (path.includes('manifest.json') || path.endsWith('.json')) groups['Config'].push(file);
+      else if (path.endsWith('.js') || path.endsWith('.ts') || path.endsWith('.jsx')) groups['Scripts'].push(file);
+      else if (path.endsWith('.html')) groups['Views'].push(file);
+      else if (path.endsWith('.css')) groups['Styles'].push(file);
+      else if (path.endsWith('.png') || path.endsWith('.ico') || path.endsWith('.jpg')) groups['Images'].push(file);
+      else groups['Misc'].push(file);
+    });
+
+    // Remove empty groups
+    return Object.entries(groups).reduce((acc, [key, value]) => {
+      if (value.length > 0) acc[key] = value;
+      return acc;
+    }, {} as Record<string, any[]>);
+
+  }, [result]);
+
+  const toggleGroup = (groupName: string) => {
+    setCollapsedGroups(prev => ({
+      ...prev,
+      [groupName]: !prev[groupName]
+    }));
   };
 
   // Calculate "complexity" for visual feedback
@@ -246,6 +315,18 @@ function App() {
                 disabled={loading}
                 spellCheck={false}
               />
+              
+              {/* Clear Button */}
+              {prompt.length > 0 && (
+                <button 
+                    onClick={handleClearPrompt}
+                    className="absolute top-2 right-2 p-1.5 text-slate-500 hover:text-white hover:bg-white/10 rounded-md transition-colors"
+                    title="Clear Prompt"
+                >
+                    <TrashIcon />
+                </button>
+              )}
+
               {/* Status Bar for Input */}
               <div className="h-6 bg-[#0f1523] border-t border-white/5 flex items-center px-3 justify-between">
                  <div className="flex items-center gap-2 w-full mr-4">
@@ -314,25 +395,41 @@ function App() {
                </div>
                
                <div className="flex-1 overflow-y-auto custom-scrollbar bg-[#111827]">
-                  <div className="">
-                    {result.files.map((file: any) => (
-                      <button
-                        key={file.path}
-                        onClick={() => {
-                          setSelectedFile(file);
-                          setActiveTab('code');
-                        }}
-                        className={`w-full text-left px-4 py-2.5 text-xs font-mono border-b border-white/5 last:border-0 hover:bg-white/5 transition-colors flex items-center gap-3 ${
-                          selectedFile?.path === file.path 
-                          ? 'bg-indigo-500/10 text-indigo-300 border-l-2 border-l-indigo-500' 
-                          : 'text-slate-400 border-l-2 border-l-transparent'
-                        }`}
-                      >
-                        {getFileIcon(file.path)}
-                        <span className="truncate">{file.path}</span>
-                      </button>
-                    ))}
-                  </div>
+                  {Object.entries(groupedFiles).map(([groupName, files]) => (
+                    <div key={groupName}>
+                        <button 
+                            onClick={() => toggleGroup(groupName)}
+                            className="w-full flex items-center justify-between px-4 py-1.5 bg-[#1a202c]/50 hover:bg-[#1a202c] border-b border-white/5 text-[10px] font-bold text-slate-500 uppercase tracking-wider transition-colors"
+                        >
+                            <span>{groupName}</span>
+                            <span className="text-slate-600">
+                                {collapsedGroups[groupName] ? <ChevronRightIcon /> : <ChevronDownIcon />}
+                            </span>
+                        </button>
+                        
+                        {!collapsedGroups[groupName] && (
+                            <div>
+                                {(files as any[]).map((file: any) => (
+                                <button
+                                    key={file.path}
+                                    onClick={() => {
+                                    setSelectedFile(file);
+                                    setActiveTab('code');
+                                    }}
+                                    className={`w-full text-left px-4 py-2.5 text-xs font-mono border-b border-white/5 last:border-0 hover:bg-white/5 transition-colors flex items-center gap-3 ${
+                                    selectedFile?.path === file.path 
+                                    ? 'bg-indigo-500/10 text-indigo-300 border-l-2 border-l-indigo-500' 
+                                    : 'text-slate-400 border-l-2 border-l-transparent'
+                                    }`}
+                                >
+                                    {getFileIcon(file.path)}
+                                    <span className="truncate">{file.path}</span>
+                                </button>
+                                ))}
+                            </div>
+                        )}
+                    </div>
+                  ))}
                </div>
 
                <div className="p-4 border-t border-white/5 bg-[#1a202c] flex-shrink-0">
@@ -406,7 +503,23 @@ function App() {
                           <span className="text-slate-600">extension/</span>
                           <span className="text-indigo-400">{selectedFile.path}</span>
                         </div>
-                        <span className="text-[10px] font-mono text-slate-500 uppercase tracking-widest bg-white/5 px-2 py-0.5 rounded">{selectedFile.language || 'TEXT'}</span>
+                        
+                        <div className="flex items-center gap-3">
+                            {selectedFile.type === 'text' && (
+                                <button
+                                    onClick={handleCopyCode}
+                                    className={`flex items-center gap-2 px-3 py-1.5 rounded-md text-xs font-medium border transition-all ${
+                                        copyFeedback 
+                                        ? 'bg-emerald-500/10 text-emerald-400 border-emerald-500/20' 
+                                        : 'bg-white/5 text-slate-400 border-white/10 hover:bg-white/10 hover:text-slate-200'
+                                    }`}
+                                >
+                                    {copyFeedback ? <CheckIcon /> : <CopyIcon />}
+                                    {copyFeedback ? 'Copied' : 'Copy'}
+                                </button>
+                            )}
+                            <span className="text-[10px] font-mono text-slate-500 uppercase tracking-widest bg-white/5 px-2 py-0.5 rounded">{selectedFile.language || 'TEXT'}</span>
+                        </div>
                       </div>
                       
                       {/* Editor Content */}
@@ -437,7 +550,7 @@ function App() {
                 {/* GUIDES VIEW */}
                 {(activeTab === 'testing' || activeTab === 'security') && (
                   <div className="max-w-3xl mx-auto p-12">
-                     <div className="prose prose-invert prose-slate prose-headings:font-medium prose-headings:text-indigo-100 prose-p:text-slate-400 prose-pre:bg-[#1f2937] prose-pre:border prose-pre:border-white/10 prose-strong:text-slate-200">
+                     <div className="prose prose-invert prose-slate prose-headings:font-medium prose-headings:text-indigo-100 prose-p:text-slate-400 prose-p:mb-6 prose-p:leading-relaxed prose-li:mb-2 prose-pre:bg-[#1f2937] prose-pre:border prose-pre:border-white/10 prose-strong:text-slate-200">
                         <Markdown>{activeTab === 'testing' ? result.testing_guide : result.security_review}</Markdown>
                      </div>
                   </div>
@@ -482,24 +595,46 @@ async function generateIconBlob(description: string): Promise<Blob | null> {
   const ctx = canvas.getContext('2d');
   if (!ctx) return null;
 
-  // Background Color
-  // Prioritize hex codes, but fallback to "solid COLOR" just in case the AI outputs a named color.
-  const hexMatch = description.match(/#[0-9a-fA-F]{3,6}/);
-  if (hexMatch) {
-    ctx.fillStyle = hexMatch[0];
+  // --- New Background Parsing Logic (supports gradients) ---
+  const bgMatch = description.match(/background\s+((?:#[0-9a-fA-F]{3,6}\s*)+)/i);
+  let bgColors = ['#3C78DC']; // Default blue
+  if (bgMatch) {
+    // Extract one or more hex codes
+    bgColors = bgMatch[1].trim().split(/\s+/);
   } else {
-    // Attempt to catch "solid blue background" style if hex is missing
-    const solidMatch = description.match(/solid\s+([a-zA-Z]+)\s+background/i);
-    ctx.fillStyle = solidMatch ? solidMatch[1] : '#3C78DC'; // Default to blue if parsing fails
+     // Fallback for old style "solid blue background" or "solid #HEX background"
+     const solidHex = description.match(/solid\s+(#[0-9a-fA-F]{3,6})\s+background/i);
+     if (solidHex) bgColors = [solidHex[1]];
+     else {
+        const solidName = description.match(/solid\s+([a-zA-Z]+)\s+background/i);
+        if (solidName) bgColors = [solidName[1]]; // Browser named color
+     }
+  }
+
+  // Draw Background
+  if (bgColors.length > 1) {
+    // Linear Gradient top-left to bottom-right
+    const grad = ctx.createLinearGradient(0, 0, width, height);
+    // Distribute colors evenly
+    bgColors.forEach((col, i) => {
+        grad.addColorStop(i / (bgColors.length - 1), col);
+    });
+    ctx.fillStyle = grad;
+  } else {
+    ctx.fillStyle = bgColors[0];
   }
   ctx.fillRect(0, 0, width, height);
 
+
+  // --- New Foreground Parsing Logic ---
+  const fgMatch = description.match(/foreground\s+(#[0-9a-fA-F]{3,6})/i);
+  const fgColor = fgMatch ? fgMatch[1] : '#FFFFFF';
+
   // Text / Initials
-  // Handles both single ' ' and double " " quotes for flexibility
   const textMatch = description.match(/"([^"]+)"/) || description.match(/'([^']+)'/);
   if (textMatch) {
     const text = textMatch[1];
-    ctx.fillStyle = '#FFFFFF';
+    ctx.fillStyle = fgColor;
     ctx.font = `bold ${Math.floor(width / 2)}px sans-serif`;
     ctx.textAlign = 'center';
     ctx.textBaseline = 'middle';
@@ -526,18 +661,39 @@ function IconPreview({ description }: { description: string }) {
     const ctx = canvas.getContext('2d');
     if (!ctx) return;
 
-    const hexMatch = description.match(/#[0-9a-fA-F]{3,6}/);
-    if (hexMatch) {
-      ctx.fillStyle = hexMatch[0];
+    // Background
+    const bgMatch = description.match(/background\s+((?:#[0-9a-fA-F]{3,6}\s*)+)/i);
+    let bgColors = ['#3C78DC'];
+    if (bgMatch) {
+      bgColors = bgMatch[1].trim().split(/\s+/);
     } else {
-      const solidMatch = description.match(/solid\s+([a-zA-Z]+)\s+background/i);
-      ctx.fillStyle = solidMatch ? solidMatch[1] : '#3C78DC';
+       const solidHex = description.match(/solid\s+(#[0-9a-fA-F]{3,6})\s+background/i);
+       if (solidHex) bgColors = [solidHex[1]];
+       else {
+          const solidName = description.match(/solid\s+([a-zA-Z]+)\s+background/i);
+          if (solidName) bgColors = [solidName[1]];
+       }
+    }
+
+    if (bgColors.length > 1) {
+      const grad = ctx.createLinearGradient(0, 0, width, height);
+      bgColors.forEach((col, i) => {
+          grad.addColorStop(i / (bgColors.length - 1), col);
+      });
+      ctx.fillStyle = grad;
+    } else {
+      ctx.fillStyle = bgColors[0];
     }
     ctx.fillRect(0, 0, width, height);
 
+    // Foreground
+    const fgMatch = description.match(/foreground\s+(#[0-9a-fA-F]{3,6})/i);
+    const fgColor = fgMatch ? fgMatch[1] : '#FFFFFF';
+
+    // Text
     const textMatch = description.match(/"([^"]+)"/) || description.match(/'([^']+)'/);
     if (textMatch) {
-      ctx.fillStyle = '#FFFFFF';
+      ctx.fillStyle = fgColor;
       ctx.font = `bold ${Math.floor(width / 2)}px sans-serif`;
       ctx.textAlign = 'center';
       ctx.textBaseline = 'middle';
