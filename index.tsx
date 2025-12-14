@@ -22,7 +22,7 @@ Rules:
 1. Manifest V3 only.
 2. Minimal permissions (avoid <all_urls> unless absolutely necessary).
 3. No eval, no remote code.
-4. "binary-description" for icons MUST follow this format: 'PNG icon, SIZE x SIZE, style [flat|gradient], background HEX [HEX], foreground HEX, text "INITIALS" centered.' 
+4. "binary-description" for icons MUST follow this format: 'PNG icon, SIZE x SIZE, style [flat|gradient], background HEX [HEX...], foreground HEX, text "INITIALS" centered.' 
    Example 1: 'PNG icon, 48x48, style gradient, background #4F46E5 #9333EA, foreground #FFFFFF, text "EX" centered.'
    Example 2: 'PNG icon, 16x16, style flat, background #3C78DC, foreground #FFFFFF, text "E" centered.'
    Always generate icons for sizes 16, 48, and 128.
@@ -47,6 +47,11 @@ const TrashIcon = () => <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24"
 const ChevronDownIcon = () => <svg className="w-3 h-3" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" /></svg>;
 const ChevronRightIcon = () => <svg className="w-3 h-3" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" /></svg>;
 const EyeIcon = () => <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" /><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z" /></svg>;
+const AlertTriangleIcon = () => <svg className="w-3 h-3" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z" /></svg>;
+const ShareIcon = () => <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M8.684 13.342C8.886 12.938 9 12.482 9 12c0-.482-.114-.938-.316-1.342m0 2.684a3 3 0 110-2.684m0 2.684l6.632 3.316m-6.632-6l6.632-3.316m0 0a3 3 0 105.367-2.684 3 3 0 00-5.367 2.684zm0 9.316a3 3 0 105.368 2.684 3 3 0 00-5.368-2.684z" /></svg>;
+const CoffeeIcon = () => <svg className="w-4 h-4" viewBox="0 0 24 24" fill="currentColor"><path d="M20.216 6.415l-.132-.666c-.119-.596-.387-1.122-.764-1.558-.377-.437-.872-.76-1.422-.916-1.077-.289-2.208-.095-3.13.486-.921.582-1.538 1.547-1.683 2.658l-.123.737h7.254zM5.5 8h10l1.5 9.5a2.5 2.5 0 01-2.5 2.5h-8a2.5 2.5 0 01-2.5-2.5L5.5 8z" /><path d="M4 8h1.2l-.2-1.333C4.8 5.3 5.8 4 7.2 4h6.6c1.4 0 2.4 1.3 2.2 2.667L15.8 8H17c1.1 0 2 .9 2 2v2c0 1.1-.9 2-2 2h-1.2l-1.3 5.333C14.1 20.6 13.1 21 12 21s-2.1-.4-2.5-1.667L8.2 14H7c-1.1 0-2-.9-2-2v-2c0-1.1.9-2 2-2z" opacity="0.5" /></svg>;
+const HeartIcon = () => <svg className="w-4 h-4" viewBox="0 0 24 24" fill="currentColor"><path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"/></svg>;
+
 
 // File Types Icons
 const JsIcon = () => <svg className="w-4 h-4 text-yellow-400" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M16 18l6-6-6-6"/><path d="M8 6l-6 6 6 6"/></svg>;
@@ -64,12 +69,13 @@ function App() {
   const [loading, setLoading] = useState(false);
   const [loadingStep, setLoadingStep] = useState("");
   const [result, setResult] = useState<any>(null);
-  const [error, setError] = useState<string | null>(null);
+  const [errorDetails, setErrorDetails] = useState<{title: string, message: string, tip: string} | null>(null);
   const [selectedFile, setSelectedFile] = useState<any>(null);
   const [activeTab, setActiveTab] = useState<'code' | 'testing' | 'security'>('code');
   const [copyFeedback, setCopyFeedback] = useState(false);
+  const [shareFeedback, setShareFeedback] = useState(false);
   
-  // Local content state for editing
+  // Local content state for editing (both text and icon description strings)
   const [localContent, setLocalContent] = useState("");
 
   // File explorer collapsing state
@@ -77,7 +83,7 @@ function App() {
 
   // Sync local content when file selection changes
   useEffect(() => {
-    if (selectedFile && selectedFile.type === 'text') {
+    if (selectedFile) {
         setLocalContent(selectedFile.content);
     }
   }, [selectedFile]);
@@ -93,7 +99,7 @@ function App() {
     
     setLoading(true);
     setLoadingStep("Initializing builder...");
-    setError(null);
+    setErrorDetails(null);
     setResult(null);
     setSelectedFile(null);
     setCollapsedGroups({}); // Reset collapse state
@@ -136,7 +142,7 @@ function App() {
       try {
         data = JSON.parse(jsonStr);
       } catch (parseError) {
-        throw new Error("Received malformed JSON from the AI. Please try again.");
+        throw new Error("Received malformed JSON from the AI.");
       }
 
       if (!data.files || !Array.isArray(data.files)) {
@@ -150,16 +156,16 @@ function App() {
       }
     } catch (err: any) {
       console.error("Generation Error:", err);
-      let userMessage = "An unexpected error occurred.";
-      
-      if (typeof err.message === 'string') {
-          if (err.message.includes('400')) userMessage = "Request invalid. Please check your prompt.";
-          else if (err.message.includes('429')) userMessage = "Too many requests. Please wait a moment.";
-          else if (err.message.includes('503') || err.message.includes('500')) userMessage = "AI service unavailable. Please try again later.";
-          else userMessage = err.message;
-      }
-      
-      setError(userMessage);
+      const msg = err.message || "Unknown error";
+      let errorObj = { title: "Unexpected Error", message: msg, tip: "Check your internet connection or try again." };
+
+      if (msg.includes('400')) errorObj = { title: "Invalid Request", message: "The AI could not process this prompt.", tip: "Check if your prompt is too long or contains prohibited content." };
+      else if (msg.includes('429')) errorObj = { title: "Rate Limit Exceeded", message: "You are generating too fast.", tip: "Please wait a minute before trying again." };
+      else if (msg.includes('503') || msg.includes('500')) errorObj = { title: "AI Service Unavailable", message: "The AI service is temporarily down.", tip: "Please try again in a few minutes." };
+      else if (msg.includes('JSON')) errorObj = { title: "Generation Glitch", message: "The AI returned malformed code.", tip: "Try again. If it persists, simplify your prompt." };
+      else if (msg.includes('SAFETY')) errorObj = { title: "Safety Block", message: "The request violated safety policies.", tip: "Modify your prompt to avoid sensitive topics." };
+
+      setErrorDetails(errorObj);
     } finally {
       clearInterval(intervalId);
       setLoading(false);
@@ -195,11 +201,19 @@ function App() {
   };
 
   const handleCopyCode = () => {
-    if (selectedFile?.type === 'text') {
-      navigator.clipboard.writeText(localContent); // Copy edited content
+    // Allows copying content of text or binary-description (the desc string)
+    if (selectedFile) {
+      navigator.clipboard.writeText(localContent); 
       setCopyFeedback(true);
       setTimeout(() => setCopyFeedback(false), 2000);
     }
+  };
+
+  const handleShareProject = () => {
+    // Share current URL for now
+    navigator.clipboard.writeText("Check out this AI Chrome Extension Generator: " + window.location.href);
+    setShareFeedback(true);
+    setTimeout(() => setShareFeedback(false), 2000);
   };
 
   const handleClearPrompt = () => {
@@ -265,7 +279,7 @@ function App() {
     }));
   };
 
-  // Calculate "complexity" for visual feedback
+  // Prompt Analysis
   const promptLength = prompt.length;
   const complexityPercent = Math.min(100, (promptLength / 200) * 100);
   let complexityColor = "bg-emerald-500";
@@ -273,10 +287,25 @@ function App() {
   if (promptLength > 50) { complexityColor = "bg-blue-500"; complexityText = "Detailed"; }
   if (promptLength > 150) { complexityColor = "bg-purple-500"; complexityText = "Complex"; }
 
+  // Prompt Warning Logic
+  const PROMPT_WARN_LIMIT = 1000;
+  const PROMPT_CRITICAL_LIMIT = 2000;
+  let promptStatusColor = "text-slate-500";
+  let promptWarning = null;
+
+  if (promptLength > PROMPT_CRITICAL_LIMIT) {
+    promptStatusColor = "text-red-400";
+    promptWarning = "Prompt is very long. Results may be truncated or less accurate.";
+  } else if (promptLength > PROMPT_WARN_LIMIT) {
+    promptStatusColor = "text-yellow-400";
+    promptWarning = "Prompt is long. Consider simplifying for better results.";
+  }
+
   // Check if preview is available
   const isHtml = selectedFile?.path.endsWith('.html');
   const isCss = selectedFile?.path.endsWith('.css');
   const showPreview = (isHtml || isCss) && selectedFile?.type === 'text';
+  const isImage = selectedFile?.type === 'binary-description';
 
   return (
     <div className="h-screen w-full bg-[#111827] text-slate-300 flex overflow-hidden font-sans selection:bg-indigo-500/30 selection:text-indigo-200">
@@ -334,7 +363,7 @@ function App() {
                )}
             </div>
             
-            <div className="relative group flex flex-col bg-[#111827] rounded-xl border border-white/10 overflow-hidden focus-within:border-indigo-500/50 focus-within:ring-1 focus-within:ring-indigo-500/20 transition-all shadow-inner">
+            <div className={`relative group flex flex-col bg-[#111827] rounded-xl border ${promptLength > PROMPT_WARN_LIMIT ? 'border-yellow-500/30' : 'border-white/10'} overflow-hidden focus-within:border-indigo-500/50 focus-within:ring-1 focus-within:ring-indigo-500/20 transition-all shadow-inner`}>
               <textarea
                 className="w-full h-40 bg-transparent text-sm text-slate-200 p-4 resize-none placeholder-slate-600 font-mono leading-relaxed outline-none"
                 placeholder="// Describe your extension logic here..."
@@ -356,13 +385,21 @@ function App() {
               )}
 
               {/* Status Bar for Input */}
-              <div className="h-6 bg-[#0f1523] border-t border-white/5 flex items-center px-3 justify-between">
-                 <div className="flex items-center gap-2 w-full mr-4">
-                    <div className="h-1 flex-grow bg-gray-800 rounded-full overflow-hidden">
-                       <div className={`h-full ${complexityColor} transition-all duration-300`} style={{ width: `${complexityPercent}%` }}></div>
+              <div className="h-auto min-h-[24px] bg-[#0f1523] border-t border-white/5 flex flex-col justify-center px-3 py-1">
+                 <div className="flex items-center justify-between w-full">
+                    <div className="flex items-center gap-2 w-full mr-4">
+                        <div className="h-1 flex-grow bg-gray-800 rounded-full overflow-hidden">
+                        <div className={`h-full ${complexityColor} transition-all duration-300`} style={{ width: `${complexityPercent}%` }}></div>
+                        </div>
                     </div>
+                    <span className={`text-[10px] font-mono whitespace-nowrap ${promptStatusColor}`}>{promptLength} chars</span>
                  </div>
-                 <span className="text-[10px] font-mono text-slate-500 whitespace-nowrap">{promptLength} chars</span>
+                 {promptWarning && (
+                     <div className="flex items-center gap-1.5 mt-1 text-[10px] text-yellow-500 font-medium">
+                         <AlertTriangleIcon />
+                         <span>{promptWarning}</span>
+                     </div>
+                 )}
               </div>
             </div>
 
@@ -396,15 +433,15 @@ function App() {
               </div>
             )}
 
-            {error && (
+            {errorDetails && (
               <div className="mt-4 p-4 bg-red-500/10 border border-red-500/20 text-red-200 text-sm rounded-lg flex flex-col gap-2 animate-in fade-in slide-in-from-top-2">
                   <div className="flex items-center gap-2 font-medium text-red-400">
                     <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z" /></svg>
-                    <span>Generation Failed</span>
+                    <span>{errorDetails.title}</span>
                   </div>
-                  <p className="opacity-80">{error}</p>
-                  <div className="text-xs opacity-50 mt-1 border-t border-red-500/20 pt-2">
-                      Tip: Try simplifying your request or checking your connection.
+                  <p className="opacity-80 text-xs leading-relaxed">{errorDetails.message}</p>
+                  <div className="text-xs opacity-50 mt-1 border-t border-red-500/20 pt-2 flex items-start gap-1.5">
+                      <span className="font-semibold text-red-300">Tip:</span> {errorDetails.tip}
                   </div>
               </div>
             )}
@@ -460,7 +497,14 @@ function App() {
                   ))}
                </div>
 
-               <div className="p-4 border-t border-white/5 bg-[#1a202c] flex-shrink-0">
+               <div className="p-4 border-t border-white/5 bg-[#1a202c] flex-shrink-0 grid grid-cols-[auto_1fr] gap-2">
+                   <button
+                      onClick={handleShareProject}
+                      className="px-3 bg-white/5 hover:bg-white/10 text-slate-300 border border-white/10 rounded-lg font-medium text-sm flex items-center justify-center gap-2 transition-all hover:scale-[1.02] active:scale-[0.98]"
+                      title="Share Generator Link"
+                   >
+                      {shareFeedback ? <CheckIcon /> : <ShareIcon />}
+                   </button>
                    <button
                       onClick={handleDownloadZip}
                       className="w-full py-2.5 px-4 bg-emerald-600/10 hover:bg-emerald-600/20 text-emerald-400 border border-emerald-600/20 rounded-lg font-medium text-sm flex items-center justify-center gap-2 transition-all hover:scale-[1.02] active:scale-[0.98]"
@@ -472,9 +516,21 @@ function App() {
             </div>
         )}
         
-        {/* Footer */}
-        <div className="p-4 border-t border-white/5 text-[10px] text-slate-500 text-center bg-[#1f2937] flex-shrink-0">
-          Generated code requires review before publishing.
+        {/* Footer Group */}
+        <div className="flex-shrink-0 flex flex-col">
+            {/* Disclaimer */}
+            <div className="p-3 bg-orange-500/10 border-t border-b border-orange-500/20 text-orange-200 text-xs font-bold text-center">
+                ⚠️ Generated code requires review before publishing.
+            </div>
+            
+            {/* Credits */}
+            <div className="p-4 bg-[#111827] flex flex-col items-center gap-2 text-[10px] text-slate-500 border-t border-white/5">
+                <span>Created December 2025 | E.O.</span>
+                <div className="flex items-center gap-3">
+                    <a href="#" className="hover:text-pink-400 transition-colors" title="Ko-fi"><HeartIcon /></a>
+                    <a href="#" className="hover:text-yellow-400 transition-colors" title="Buy Me a Coffee"><CoffeeIcon /></a>
+                </div>
+            </div>
         </div>
       </div>
 
@@ -538,26 +594,56 @@ function App() {
                                     <EyeIcon /> Live Preview
                                 </span>
                             )}
-                            {selectedFile.type === 'text' && (
-                                <button
-                                    onClick={handleCopyCode}
-                                    className={`flex items-center gap-2 px-3 py-1.5 rounded-md text-xs font-medium border transition-all ${
-                                        copyFeedback 
-                                        ? 'bg-emerald-500/10 text-emerald-400 border-emerald-500/20' 
-                                        : 'bg-white/5 text-slate-400 border-white/10 hover:bg-white/10 hover:text-slate-200'
-                                    }`}
-                                >
-                                    {copyFeedback ? <CheckIcon /> : <CopyIcon />}
-                                    {copyFeedback ? 'Copied' : 'Copy'}
-                                </button>
-                            )}
-                            <span className="text-[10px] font-mono text-slate-500 uppercase tracking-widest bg-white/5 px-2 py-0.5 rounded">{selectedFile.language || 'TEXT'}</span>
+                            <button
+                                onClick={handleCopyCode}
+                                className={`flex items-center gap-2 px-3 py-1.5 rounded-md text-xs font-medium border transition-all ${
+                                    copyFeedback 
+                                    ? 'bg-emerald-500/10 text-emerald-400 border-emerald-500/20' 
+                                    : 'bg-white/5 text-slate-400 border-white/10 hover:bg-white/10 hover:text-slate-200'
+                                }`}
+                            >
+                                {copyFeedback ? <CheckIcon /> : <CopyIcon />}
+                                {copyFeedback ? 'Copied' : 'Copy'}
+                            </button>
+                            <span className="text-[10px] font-mono text-slate-500 uppercase tracking-widest bg-white/5 px-2 py-0.5 rounded">{selectedFile.language || (isImage ? 'IMG' : 'TEXT')}</span>
                         </div>
                       </div>
                       
                       {/* Editor Content + Preview Split */}
                       <div className="flex-grow flex overflow-hidden">
-                        {selectedFile.type === 'text' ? (
+                        {isImage ? (
+                           // IMAGE / ICON EDITOR VIEW
+                           <div className="w-full flex flex-col items-center justify-start py-10 gap-8 overflow-auto">
+                              
+                              <div className="flex flex-col items-center gap-4">
+                                <p className="text-sm font-medium text-slate-300 uppercase tracking-widest">Icon Preview</p>
+                                <div className="relative group">
+                                    <div className="absolute -inset-4 bg-indigo-500/20 rounded-full blur-xl opacity-0 group-hover:opacity-100 transition duration-700"></div>
+                                    <div className="relative p-8 bg-white/5 border border-white/10 rounded-xl">
+                                        {/* Use localContent so it updates on edit */}
+                                        <IconPreview description={localContent} />
+                                    </div>
+                                </div>
+                              </div>
+
+                              <div className="w-full max-w-2xl px-6">
+                                 <IconEditor 
+                                    description={localContent} 
+                                    onUpdate={handleContentChange} 
+                                 />
+                              </div>
+
+                              <div className="w-full max-w-2xl px-6 mt-4">
+                                  <label className="text-xs font-semibold text-slate-500 uppercase tracking-wider mb-2 block">Raw Description</label>
+                                  <textarea 
+                                      value={localContent}
+                                      onChange={(e) => handleContentChange(e.target.value)}
+                                      className="w-full h-24 bg-[#0b0f19] border border-white/10 rounded-lg p-4 font-mono text-xs text-slate-400 focus:border-indigo-500/50 focus:outline-none resize-none"
+                                  />
+                              </div>
+                           </div>
+                        ) : (
+                           // TEXT / CODE EDITOR VIEW
                            <>
                              {/* Code Editor */}
                              <div className={`${showPreview ? 'w-1/2 border-r border-white/10' : 'w-full'} h-full flex flex-col`}>
@@ -584,19 +670,6 @@ function App() {
                                  </div>
                              )}
                            </>
-                        ) : (
-                          <div className="w-full flex flex-col items-center justify-center py-20 gap-6 overflow-auto">
-                             <div className="relative group">
-                                <div className="absolute -inset-4 bg-indigo-500/20 rounded-full blur-xl opacity-0 group-hover:opacity-100 transition duration-700"></div>
-                                <div className="relative p-8 bg-white/5 border border-white/10 rounded-xl">
-                                    <IconPreview description={selectedFile.content} />
-                                </div>
-                             </div>
-                             <div className="text-center">
-                               <p className="text-sm font-medium text-slate-300 mb-1">Asset Preview</p>
-                               <p className="text-xs text-slate-500 font-mono max-w-md">"{selectedFile.content}"</p>
-                             </div>
-                          </div>
                         )}
                       </div>
                    </div>
@@ -646,6 +719,91 @@ function TabButton({ active, onClick, label, icon }: { active: boolean, onClick:
       {active && <div className="absolute bottom-0 left-0 right-0 h-[1px] bg-gradient-to-r from-transparent via-indigo-500 to-transparent opacity-50"></div>}
     </button>
   );
+}
+
+function IconEditor({ description, onUpdate }: { description: string, onUpdate: (s: string) => void }) {
+    // Helper to parse existing colors
+    const getColors = (desc: string) => {
+        const bgMatch = desc.match(/background\s+((?:#[0-9a-fA-F]{3,6}\s*)+)/i);
+        const bgColors = bgMatch ? bgMatch[1].trim().split(/\s+/) : ['#3C78DC'];
+        
+        const fgMatch = desc.match(/foreground\s+(#[0-9a-fA-F]{3,6})/i);
+        const fgColor = fgMatch ? fgMatch[1] : '#FFFFFF';
+        
+        return { bgColors, fgColor };
+    };
+
+    const { bgColors, fgColor } = getColors(description);
+
+    const updateColor = (type: 'bg' | 'fg', index: number, newColor: string) => {
+        let newDesc = description;
+        if (type === 'bg') {
+            const newBgColors = [...bgColors];
+            newBgColors[index] = newColor;
+            // Replace the entire background segment regex
+            newDesc = newDesc.replace(/background\s+((?:#[0-9a-fA-F]{3,6}\s*)+)/i, `background ${newBgColors.join(' ')} `);
+        } else {
+            newDesc = newDesc.replace(/foreground\s+(#[0-9a-fA-F]{3,6})/i, `foreground ${newColor}`);
+        }
+        onUpdate(newDesc);
+    };
+
+    const addBgColor = () => {
+         const newBgColors = [...bgColors, '#888888'];
+         const newDesc = description.replace(/background\s+((?:#[0-9a-fA-F]{3,6}\s*)+)/i, `background ${newBgColors.join(' ')} `);
+         onUpdate(newDesc);
+    }
+    
+    const removeBgColor = (index: number) => {
+         if (bgColors.length <= 1) return;
+         const newBgColors = bgColors.filter((_, i) => i !== index);
+         const newDesc = description.replace(/background\s+((?:#[0-9a-fA-F]{3,6}\s*)+)/i, `background ${newBgColors.join(' ')} `);
+         onUpdate(newDesc);
+    }
+
+    return (
+        <div className="bg-[#1a202c] rounded-lg border border-white/5 p-4 flex flex-col gap-4">
+            <h3 className="text-xs font-semibold text-indigo-400 uppercase tracking-wider">Theme Colors</h3>
+            
+            <div className="flex flex-col gap-3">
+                <div className="flex items-center justify-between">
+                    <span className="text-xs text-slate-400">Background Gradient</span>
+                    <button onClick={addBgColor} className="text-[10px] bg-white/5 hover:bg-white/10 px-2 py-0.5 rounded text-slate-300">+ Add Stop</button>
+                </div>
+                <div className="flex flex-wrap gap-2">
+                    {bgColors.map((color, i) => (
+                        <div key={i} className="flex flex-col items-center gap-1 group relative">
+                             <input 
+                                type="color" 
+                                value={color} 
+                                onChange={(e) => updateColor('bg', i, e.target.value)}
+                                className="w-10 h-10 rounded cursor-pointer border-0 p-0 bg-transparent" 
+                             />
+                             <span className="text-[10px] font-mono text-slate-500">{color}</span>
+                             {bgColors.length > 1 && (
+                                <button onClick={() => removeBgColor(i)} className="absolute -top-1 -right-1 bg-red-500 text-white w-4 h-4 rounded-full flex items-center justify-center text-[10px] opacity-0 group-hover:opacity-100 transition-opacity">×</button>
+                             )}
+                        </div>
+                    ))}
+                </div>
+            </div>
+
+            <div className="h-px bg-white/5 w-full"></div>
+
+            <div className="flex flex-col gap-3">
+                <span className="text-xs text-slate-400">Foreground (Text/Symbol)</span>
+                <div className="flex flex-col items-start gap-1">
+                        <input 
+                        type="color" 
+                        value={fgColor} 
+                        onChange={(e) => updateColor('fg', 0, e.target.value)}
+                        className="w-10 h-10 rounded cursor-pointer border-0 p-0 bg-transparent" 
+                        />
+                        <span className="text-[10px] font-mono text-slate-500">{fgColor}</span>
+                </div>
+            </div>
+        </div>
+    );
 }
 
 // Logic to construct preview HTML with injected CSS
