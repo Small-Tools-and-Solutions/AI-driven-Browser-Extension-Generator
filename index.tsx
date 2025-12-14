@@ -49,8 +49,12 @@ const ChevronRightIcon = () => <svg className="w-3 h-3" fill="none" viewBox="0 0
 const EyeIcon = () => <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" /><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z" /></svg>;
 const AlertTriangleIcon = () => <svg className="w-3 h-3" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z" /></svg>;
 const ShareIcon = () => <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M8.684 13.342C8.886 12.938 9 12.482 9 12c0-.482-.114-.938-.316-1.342m0 2.684a3 3 0 110-2.684m0 2.684l6.632 3.316m-6.632-6l6.632-3.316m0 0a3 3 0 105.367-2.684 3 3 0 00-5.367 2.684zm0 9.316a3 3 0 105.368 2.684 3 3 0 00-5.368-2.684z" /></svg>;
-const CoffeeIcon = () => <svg className="w-4 h-4" viewBox="0 0 24 24" fill="currentColor"><path d="M20.216 6.415l-.132-.666c-.119-.596-.387-1.122-.764-1.558-.377-.437-.872-.76-1.422-.916-1.077-.289-2.208-.095-3.13.486-.921.582-1.538 1.547-1.683 2.658l-.123.737h7.254zM5.5 8h10l1.5 9.5a2.5 2.5 0 01-2.5 2.5h-8a2.5 2.5 0 01-2.5-2.5L5.5 8z" /><path d="M4 8h1.2l-.2-1.333C4.8 5.3 5.8 4 7.2 4h6.6c1.4 0 2.4 1.3 2.2 2.667L15.8 8H17c1.1 0 2 .9 2 2v2c0 1.1-.9 2-2 2h-1.2l-1.3 5.333C14.1 20.6 13.1 21 12 21s-2.1-.4-2.5-1.667L8.2 14H7c-1.1 0-2-.9-2-2v-2c0-1.1.9-2 2-2z" opacity="0.5" /></svg>;
 const HeartIcon = () => <svg className="w-4 h-4" viewBox="0 0 24 24" fill="currentColor"><path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"/></svg>;
+const SunIcon = () => <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 3v1m0 16v1m9-9h-1M4 12H3m15.364 6.364l-.707-.707M6.343 6.343l-.707-.707m12.728 0l-.707.707M6.343 17.657l-.707.707M16 12a4 4 0 11-8 0 4 4 0 018 0z" /></svg>;
+const MoonIcon = () => <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M20.354 15.354A9 9 0 018.646 3.646 9.003 9.003 0 0012 21a9.003 9.003 0 008.354-5.646z" /></svg>;
+const DownloadFileIcon = () => <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M7 16a4 4 0 01-.88-7.903A5 5 0 1115.9 6L16 6a5 5 0 011 9.9M9 19l3 3m0 0l3-3m-3 3V10" /></svg>;
+const SmileIcon = () => <svg className="w-8 h-8" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M14.828 14.828a4 4 0 01-5.656 0M9 10h.01M15 10h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" /></svg>;
+const SadIcon = () => <svg className="w-8 h-8" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9.172 16.172a4 4 0 015.656 0M9 10h.01M15 10h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" /></svg>;
 
 
 // File Types Icons
@@ -74,12 +78,27 @@ function App() {
   const [activeTab, setActiveTab] = useState<'code' | 'testing' | 'security'>('code');
   const [copyFeedback, setCopyFeedback] = useState(false);
   const [shareFeedback, setShareFeedback] = useState(false);
+  const [isDark, setIsDark] = useState(true);
   
+  // Feedback State
+  const [feedbackEmail, setFeedbackEmail] = useState("");
+  const [feedbackText, setFeedbackText] = useState("");
+  const [feedbackSentiment, setFeedbackSentiment] = useState<'happy' | 'sad' | null>(null);
+  const [feedbackStatus, setFeedbackStatus] = useState<'idle' | 'sending' | 'sent'>('idle');
+
   // Local content state for editing (both text and icon description strings)
   const [localContent, setLocalContent] = useState("");
 
   // File explorer collapsing state
   const [collapsedGroups, setCollapsedGroups] = useState<Record<string, boolean>>({});
+
+  useEffect(() => {
+    if (isDark) {
+        document.documentElement.classList.add('dark');
+    } else {
+        document.documentElement.classList.remove('dark');
+    }
+  }, [isDark]);
 
   // Sync local content when file selection changes
   useEffect(() => {
@@ -93,7 +112,7 @@ function App() {
     
     // Check if result exists and confirm with user before proceeding
     if (result) {
-        const confirmed = window.confirm("Generating a new extension will discard your current files. Are you sure you want to proceed?");
+        const confirmed = window.confirm("Generating new code will discard current files. Continue?");
         if (!confirmed) return;
     }
     
@@ -200,6 +219,25 @@ function App() {
     URL.revokeObjectURL(url);
   };
 
+  const handleDownloadSingleFile = async () => {
+      if (!selectedFile) return;
+      let blob;
+      if (selectedFile.type === 'text') {
+          blob = new Blob([localContent], { type: 'text/plain' });
+      } else if (selectedFile.type === 'binary-description') {
+          blob = await generateIconBlob(localContent);
+      }
+      
+      if (blob) {
+          const url = URL.createObjectURL(blob);
+          const a = document.createElement("a");
+          a.href = url;
+          a.download = selectedFile.path.split('/').pop() || "download";
+          a.click();
+          URL.revokeObjectURL(url);
+      }
+  };
+
   const handleCopyCode = () => {
     // Allows copying content of text or binary-description (the desc string)
     if (selectedFile) {
@@ -229,6 +267,31 @@ function App() {
         );
         setResult({ ...result, files: updatedFiles });
     }
+  };
+  
+  const handleSendFeedback = () => {
+     if (!feedbackEmail || !feedbackText || !feedbackSentiment) {
+         alert("Please complete all feedback fields.");
+         return;
+     }
+     setFeedbackStatus('sending');
+     
+     // Construct Mailto
+     const subject = `ExtensionGen Feedback (${feedbackSentiment === 'happy' ? 'Positive' : 'Negative'})`;
+     const body = `From: ${feedbackEmail}\n\n${feedbackText}`;
+     const mailtoLink = `mailto:pam33na@yahoo.com?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`;
+     
+     // Trigger simulated send and actual mailto
+     setTimeout(() => {
+        window.location.href = mailtoLink;
+        setFeedbackStatus('sent');
+        setTimeout(() => {
+            setFeedbackStatus('idle');
+            setFeedbackEmail("");
+            setFeedbackText("");
+            setFeedbackSentiment(null);
+        }, 3000);
+     }, 800);
   };
 
   const getFileIcon = (filename: string) => {
@@ -306,24 +369,39 @@ function App() {
   const isCss = selectedFile?.path.endsWith('.css');
   const showPreview = (isHtml || isCss) && selectedFile?.type === 'text';
   const isImage = selectedFile?.type === 'binary-description';
+  
+  // Check for edits
+  const isEdited = selectedFile && localContent !== selectedFile.content;
 
   return (
-    <div className="h-screen w-full bg-[#111827] text-slate-300 flex overflow-hidden font-sans selection:bg-indigo-500/30 selection:text-indigo-200">
+    <div className={`h-screen w-full transition-colors duration-300 flex overflow-hidden font-sans selection:bg-indigo-500/30 selection:text-indigo-200 
+        dark:bg-[#111827] dark:text-slate-300 bg-gray-50 text-slate-700`}>
       
       {/* LEFT SIDEBAR: Controls & Input */}
-      <div className="w-[400px] flex-shrink-0 flex flex-col border-r border-white/5 bg-[#1f2937]">
+      <div className={`w-[400px] flex-shrink-0 flex flex-col border-r transition-colors duration-300
+         dark:border-white/5 dark:bg-[#1f2937] border-gray-200 bg-white`}>
         
         {/* Header */}
-        <div className="p-6 border-b border-white/5 bg-[#1a202c] flex-shrink-0">
-          <div className="flex items-center gap-2 mb-1">
-            <div className="w-8 h-8 rounded-lg bg-gradient-to-br from-indigo-500 to-purple-600 flex items-center justify-center shadow-lg shadow-indigo-500/20">
-              <svg className="w-5 h-5 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19.428 15.428a2 2 0 00-1.022-.547l-2.384-.477a6 6 0 00-3.86.517l-.318.158a6 6 0 01-3.86.517L6.05 15.21a2 2 0 00-1.806.547M8 4h8l-1 1v5.172a2 2 0 00.586 1.414l5 5c1.26 1.26.367 3.414-1.415 3.414H4.828c-1.782 0-2.674-2.154-1.414-3.414l5-5A2 2 0 009 10.172V5L8 4z" /></svg>
+        <div className={`p-6 border-b flex-shrink-0 transition-colors duration-300
+            dark:border-white/5 dark:bg-[#1a202c] border-gray-100 bg-gray-50`}>
+          <div className="flex items-center justify-between mb-1">
+             <div className="flex items-center gap-2">
+                <div className="w-8 h-8 rounded-lg bg-gradient-to-br from-indigo-500 to-purple-600 flex items-center justify-center shadow-lg shadow-indigo-500/20">
+                    <svg className="w-5 h-5 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19.428 15.428a2 2 0 00-1.022-.547l-2.384-.477a6 6 0 00-3.86.517l-.318.158a6 6 0 01-3.86.517L6.05 15.21a2 2 0 00-1.806.547M8 4h8l-1 1v5.172a2 2 0 00.586 1.414l5 5c1.26 1.26.367 3.414-1.415 3.414H4.828c-1.782 0-2.674-2.154-1.414-3.414l5-5A2 2 0 009 10.172V5L8 4z" /></svg>
+                </div>
+                <h1 className="text-xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-indigo-600 to-purple-600 dark:from-white dark:to-slate-400">
+                    ExtensionGen
+                </h1>
             </div>
-            <h1 className="text-xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-white to-slate-400">
-              ExtensionGen
-            </h1>
+            <button 
+                onClick={() => setIsDark(!isDark)}
+                className="p-2 rounded-lg transition-colors dark:text-slate-400 dark:hover:bg-white/10 text-slate-500 hover:bg-gray-100"
+                title="Toggle Theme"
+            >
+                {isDark ? <SunIcon /> : <MoonIcon />}
+            </button>
           </div>
-          <p className="text-xs text-slate-400 pl-10">AI-Powered Chrome Extension Builder</p>
+          <p className="text-xs dark:text-slate-400 text-slate-500 pl-10">AI-Powered Chrome Extension Builder</p>
         </div>
 
         {/* INPUT SECTION - Scrollable (Takes available space) */}
@@ -331,7 +409,7 @@ function App() {
           
           {/* Section: Examples */}
           <div>
-            <div className="flex items-center gap-2 mb-3 text-xs font-semibold text-indigo-400 uppercase tracking-wider">
+            <div className="flex items-center gap-2 mb-3 text-xs font-semibold text-indigo-500 dark:text-indigo-400 uppercase tracking-wider">
               <SparklesIcon /> 
               <span>Quick Start</span>
             </div>
@@ -340,10 +418,12 @@ function App() {
                 <button
                   key={i}
                   onClick={() => setPrompt(ex)}
-                  className="group relative flex items-center gap-3 p-3 text-left rounded-lg bg-white/5 hover:bg-white/10 border border-white/5 hover:border-indigo-500/30 transition-all duration-200 shadow-sm"
+                  className={`group relative flex items-center gap-3 p-3 text-left rounded-lg border transition-all duration-200 shadow-sm
+                    dark:bg-white/5 dark:hover:bg-white/10 dark:border-white/5 dark:hover:border-indigo-500/30
+                    bg-gray-50 hover:bg-white border-gray-200 hover:border-indigo-300`}
                 >
-                  <div className="w-1.5 h-1.5 rounded-full bg-slate-500 group-hover:bg-indigo-400 transition-colors"></div>
-                  <span className="text-xs text-slate-300 group-hover:text-white line-clamp-1 font-medium">{ex}</span>
+                  <div className="w-1.5 h-1.5 rounded-full dark:bg-slate-500 bg-slate-400 group-hover:bg-indigo-400 transition-colors"></div>
+                  <span className="text-xs dark:text-slate-300 text-slate-600 group-hover:dark:text-white group-hover:text-slate-900 line-clamp-1 font-medium">{ex}</span>
                 </button>
               ))}
             </div>
@@ -352,7 +432,7 @@ function App() {
           {/* Section: Prompt Input */}
           <div className="flex flex-col">
             <div className="flex items-center justify-between mb-3">
-               <div className="flex items-center gap-2 text-xs font-semibold text-indigo-400 uppercase tracking-wider">
+               <div className="flex items-center gap-2 text-xs font-semibold text-indigo-500 dark:text-indigo-400 uppercase tracking-wider">
                   <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z" /></svg>
                   <span>Specification</span>
                </div>
@@ -363,9 +443,14 @@ function App() {
                )}
             </div>
             
-            <div className={`relative group flex flex-col bg-[#111827] rounded-xl border ${promptLength > PROMPT_WARN_LIMIT ? 'border-yellow-500/30' : 'border-white/10'} overflow-hidden focus-within:border-indigo-500/50 focus-within:ring-1 focus-within:ring-indigo-500/20 transition-all shadow-inner`}>
+            <div className={`relative group flex flex-col rounded-xl border overflow-hidden focus-within:ring-1 focus-within:ring-indigo-500/20 transition-all shadow-inner
+                dark:bg-[#111827] dark:border-white/10 dark:focus-within:border-indigo-500/50
+                bg-white border-gray-200 focus-within:border-indigo-500/50
+                ${promptLength > PROMPT_WARN_LIMIT ? 'dark:border-yellow-500/30 border-yellow-500/50' : ''}`}>
               <textarea
-                className="w-full h-40 bg-transparent text-sm text-slate-200 p-4 resize-none placeholder-slate-600 font-mono leading-relaxed outline-none"
+                className="w-full h-40 bg-transparent text-sm p-4 resize-none font-mono leading-relaxed outline-none
+                    dark:text-slate-200 dark:placeholder-slate-600
+                    text-slate-800 placeholder-slate-400"
                 placeholder="// Describe your extension logic here..."
                 value={prompt}
                 onChange={(e) => setPrompt(e.target.value)}
@@ -377,7 +462,9 @@ function App() {
               {prompt.length > 0 && (
                 <button 
                     onClick={handleClearPrompt}
-                    className="absolute top-2 right-2 p-1.5 text-slate-500 hover:text-white hover:bg-white/10 rounded-md transition-colors"
+                    className="absolute top-2 right-2 p-1.5 rounded-md transition-colors
+                        dark:text-slate-500 dark:hover:text-white dark:hover:bg-white/10
+                        text-slate-400 hover:text-slate-700 hover:bg-gray-100"
                     title="Clear Prompt"
                 >
                     <TrashIcon />
@@ -385,10 +472,12 @@ function App() {
               )}
 
               {/* Status Bar for Input */}
-              <div className="h-auto min-h-[24px] bg-[#0f1523] border-t border-white/5 flex flex-col justify-center px-3 py-1">
+              <div className="h-auto min-h-[24px] border-t flex flex-col justify-center px-3 py-1
+                dark:bg-[#0f1523] dark:border-white/5
+                bg-gray-50 border-gray-200">
                  <div className="flex items-center justify-between w-full">
                     <div className="flex items-center gap-2 w-full mr-4">
-                        <div className="h-1 flex-grow bg-gray-800 rounded-full overflow-hidden">
+                        <div className="h-1 flex-grow dark:bg-gray-800 bg-gray-200 rounded-full overflow-hidden">
                         <div className={`h-full ${complexityColor} transition-all duration-300`} style={{ width: `${complexityPercent}%` }}></div>
                         </div>
                     </div>
@@ -450,21 +539,26 @@ function App() {
           
         {/* FILE EXPLORER SECTION - Docked at bottom when active */}
         {result && (
-            <div className="flex-shrink-0 h-[45%] border-t border-white/10 bg-[#111827] flex flex-col animate-in slide-in-from-bottom-6 duration-500">
-               <div className="p-4 border-b border-white/5 bg-[#1a202c] flex items-center justify-between text-xs font-semibold text-indigo-400 uppercase tracking-wider flex-shrink-0">
+            <div className={`flex-shrink-0 h-[45%] border-t flex flex-col animate-in slide-in-from-bottom-6 duration-500
+               dark:border-white/10 dark:bg-[#111827] border-gray-200 bg-white`}>
+               <div className={`p-4 border-b flex items-center justify-between text-xs font-semibold uppercase tracking-wider flex-shrink-0
+                   dark:border-white/5 dark:bg-[#1a202c] dark:text-indigo-400
+                   border-gray-200 bg-gray-50 text-indigo-600`}>
                   <div className="flex items-center gap-2">
                     <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 7v10a2 2 0 002 2h14a2 2 0 002-2V9a2 2 0 00-2-2h-6l-2-2H5a2 2 0 00-2 2z" /></svg>
                     <span>Project Files</span>
                   </div>
-                  <span className="text-[10px] bg-indigo-500/10 text-indigo-300 px-2 py-0.5 rounded-full">{result.files.length} files</span>
+                  <span className="text-[10px] bg-indigo-500/10 text-indigo-500 dark:text-indigo-300 px-2 py-0.5 rounded-full">{result.files.length} files</span>
                </div>
                
-               <div className="flex-1 overflow-y-auto custom-scrollbar bg-[#111827]">
+               <div className={`flex-1 overflow-y-auto custom-scrollbar dark:bg-[#111827] bg-white`}>
                   {Object.entries(groupedFiles).map(([groupName, files]) => (
                     <div key={groupName}>
                         <button 
                             onClick={() => toggleGroup(groupName)}
-                            className="w-full flex items-center justify-between px-4 py-1.5 bg-[#1a202c]/50 hover:bg-[#1a202c] border-b border-white/5 text-[10px] font-bold text-slate-500 uppercase tracking-wider transition-colors"
+                            className={`w-full flex items-center justify-between px-4 py-1.5 border-b text-[10px] font-bold uppercase tracking-wider transition-colors
+                                dark:bg-[#1a202c]/50 dark:hover:bg-[#1a202c] dark:border-white/5 dark:text-slate-500
+                                bg-gray-50 hover:bg-gray-100 border-gray-100 text-slate-500`}
                         >
                             <span>{groupName}</span>
                             <span className="text-slate-600">
@@ -481,10 +575,12 @@ function App() {
                                     setSelectedFile(file);
                                     setActiveTab('code');
                                     }}
-                                    className={`w-full text-left px-4 py-2.5 text-xs font-mono border-b border-white/5 last:border-0 hover:bg-white/5 transition-colors flex items-center gap-3 ${
+                                    className={`w-full text-left px-4 py-2.5 text-xs font-mono border-b last:border-0 transition-colors flex items-center gap-3
+                                    dark:border-white/5 border-gray-100
+                                    ${
                                     selectedFile?.path === file.path 
-                                    ? 'bg-indigo-500/10 text-indigo-300 border-l-2 border-l-indigo-500' 
-                                    : 'text-slate-400 border-l-2 border-l-transparent'
+                                    ? 'dark:bg-indigo-500/10 dark:text-indigo-300 dark:border-l-indigo-500 bg-indigo-50 text-indigo-700 border-l-indigo-500 border-l-2' 
+                                    : 'dark:text-slate-400 dark:hover:bg-white/5 text-slate-600 hover:bg-gray-50 border-l-2 border-l-transparent'
                                     }`}
                                 >
                                     {getFileIcon(file.path)}
@@ -497,17 +593,20 @@ function App() {
                   ))}
                </div>
 
-               <div className="p-4 border-t border-white/5 bg-[#1a202c] flex-shrink-0 grid grid-cols-[auto_1fr] gap-2">
+               <div className={`p-4 border-t flex-shrink-0 grid grid-cols-[auto_1fr] gap-2
+                    dark:border-white/5 dark:bg-[#1a202c] border-gray-200 bg-gray-50`}>
                    <button
                       onClick={handleShareProject}
-                      className="px-3 bg-white/5 hover:bg-white/10 text-slate-300 border border-white/10 rounded-lg font-medium text-sm flex items-center justify-center gap-2 transition-all hover:scale-[1.02] active:scale-[0.98]"
+                      className={`px-3 border rounded-lg font-medium text-sm flex items-center justify-center gap-2 transition-all hover:scale-[1.02] active:scale-[0.98]
+                        dark:bg-white/5 dark:hover:bg-white/10 dark:text-slate-300 dark:border-white/10
+                        bg-white hover:bg-gray-100 text-slate-600 border-gray-300`}
                       title="Share Generator Link"
                    >
                       {shareFeedback ? <CheckIcon /> : <ShareIcon />}
                    </button>
                    <button
                       onClick={handleDownloadZip}
-                      className="w-full py-2.5 px-4 bg-emerald-600/10 hover:bg-emerald-600/20 text-emerald-400 border border-emerald-600/20 rounded-lg font-medium text-sm flex items-center justify-center gap-2 transition-all hover:scale-[1.02] active:scale-[0.98]"
+                      className="w-full py-2.5 px-4 bg-emerald-600/10 hover:bg-emerald-600/20 text-emerald-600 dark:text-emerald-400 border border-emerald-600/20 rounded-lg font-medium text-sm flex items-center justify-center gap-2 transition-all hover:scale-[1.02] active:scale-[0.98]"
                    >
                       <DownloadIcon />
                       Download Bundle
@@ -519,56 +618,62 @@ function App() {
         {/* Footer Group */}
         <div className="flex-shrink-0 flex flex-col">
             {/* Disclaimer */}
-            <div className="p-3 bg-orange-500/10 border-t border-b border-orange-500/20 text-orange-200 text-xs font-bold text-center">
+            <div className="p-3 bg-orange-500/10 border-t border-b border-orange-500/20 text-orange-600 dark:text-orange-200 text-xs font-bold text-center">
                 ⚠️ Generated code requires review before publishing.
             </div>
             
             {/* Credits */}
-            <div className="p-4 bg-[#111827] flex flex-col items-center gap-2 text-[10px] text-slate-500 border-t border-white/5">
-                <span>Created December 2025 | E.O.</span>
+            <div className={`p-4 flex flex-col items-center gap-2 text-[10px] border-t
+                dark:bg-[#111827] dark:text-slate-300 dark:border-white/5 
+                bg-white text-slate-800 border-gray-200 font-medium`}>
+                <span>Created December 2025 | E.O. | V1.0 (14122025)</span>
                 <div className="flex items-center gap-3">
-                    <a href="#" className="hover:text-pink-400 transition-colors" title="Ko-fi"><HeartIcon /></a>
-                    <a href="#" className="hover:text-yellow-400 transition-colors" title="Buy Me a Coffee"><CoffeeIcon /></a>
+                    <a href="https://ko-fi.com/secreq" target="_blank" rel="noopener noreferrer" className="hover:text-pink-500 transition-colors" title="Ko-fi"><HeartIcon /></a>
                 </div>
             </div>
         </div>
       </div>
 
       {/* RIGHT MAIN PANEL: Editor View */}
-      <div className="flex-grow flex flex-col bg-[#111827] relative">
+      <div className={`flex-grow flex flex-col relative
+          dark:bg-[#111827] bg-gray-50`}>
         {!result ? (
           // Empty State
-          <div className="absolute inset-0 flex flex-col items-center justify-center text-slate-500">
-            <div className="w-24 h-24 rounded-full bg-white/5 flex items-center justify-center mb-6 animate-pulse">
+          <div className="absolute inset-0 flex flex-col items-center justify-center dark:text-slate-500 text-slate-400">
+            <div className="w-24 h-24 rounded-full dark:bg-white/5 bg-gray-200 flex items-center justify-center mb-6 animate-pulse">
                <svg className="w-10 h-10 opacity-30" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1} d="M10 20l4-16m4 4l4 4-4 4M6 16l-4-4 4-4" /></svg>
             </div>
-            <h2 className="text-xl font-medium text-slate-400 mb-2">Ready to Build</h2>
+            <h2 className="text-xl font-medium dark:text-slate-400 text-slate-600 mb-2">Ready to Build</h2>
             <p className="text-sm max-w-sm text-center px-4">Enter a prompt on the left to generate your custom Chrome Extension with Manifest V3 support.</p>
           </div>
         ) : (
           <>
             {/* Top Tabs Bar */}
-            <div className="h-12 flex items-center border-b border-white/5 bg-[#1a202c] px-4 gap-1">
+            <div className={`h-12 flex items-center border-b px-4 gap-1
+                dark:border-white/5 dark:bg-[#1a202c] border-gray-200 bg-white`}>
               <TabButton 
                 active={activeTab === 'code'} 
                 onClick={() => setActiveTab('code')} 
                 label="Code Editor" 
                 icon={<CodeIcon />}
+                isDark={isDark}
               />
               <TabButton 
                 active={activeTab === 'testing'} 
                 onClick={() => setActiveTab('testing')} 
                 label="Testing Guide" 
                 icon={<PlayIcon />}
+                isDark={isDark}
               />
               <TabButton 
                 active={activeTab === 'security'} 
                 onClick={() => setActiveTab('security')} 
                 label="Security Review" 
                 icon={<ShieldIcon />}
+                isDark={isDark}
               />
               
-              <div className="ml-auto flex items-center gap-3 text-xs text-slate-500">
+              <div className="ml-auto flex items-center gap-3 text-xs dark:text-slate-500 text-slate-400">
                 <span className="flex items-center gap-1.5"><div className="w-2 h-2 rounded-full bg-emerald-500"></div>Ready</span>
                 <span className="hidden md:inline">Manifest V3</span>
               </div>
@@ -582,30 +687,51 @@ function App() {
                 {activeTab === 'code' && selectedFile && (
                    <div className="min-h-full flex flex-col h-full">
                       {/* Breadcrumb / File Info */}
-                      <div className="sticky top-0 z-10 bg-[#111827]/95 backdrop-blur border-b border-white/5 px-6 py-3 flex items-center justify-between shadow-sm flex-shrink-0">
-                        <div className="flex items-center gap-2 text-sm text-slate-300 font-mono">
-                          <span className="text-slate-600">extension/</span>
-                          <span className="text-indigo-400">{selectedFile.path}</span>
+                      <div className={`sticky top-0 z-10 backdrop-blur border-b px-6 py-3 flex items-center justify-between shadow-sm flex-shrink-0
+                          dark:bg-[#111827]/95 dark:border-white/5 
+                          bg-white/95 border-gray-100`}>
+                        <div className="flex items-center gap-2 text-sm font-mono">
+                          <span className="dark:text-slate-600 text-slate-400">extension/</span>
+                          <span className="dark:text-indigo-400 text-indigo-600">{selectedFile.path}</span>
+                          {isEdited && (
+                             <span className="ml-3 text-[10px] font-bold uppercase tracking-wider px-2 py-0.5 rounded border 
+                                bg-amber-500/10 text-amber-500 border-amber-500/50 animate-pulse">
+                                Unsaved Edits
+                             </span>
+                          )}
                         </div>
                         
                         <div className="flex items-center gap-3">
                             {showPreview && (
-                                <span className="flex items-center gap-1.5 px-2 py-0.5 rounded bg-emerald-500/10 text-emerald-400 text-[10px] font-semibold uppercase tracking-wider border border-emerald-500/20">
+                                <span className="flex items-center gap-1.5 px-2 py-0.5 rounded text-[10px] font-semibold uppercase tracking-wider border
+                                    dark:bg-emerald-500/10 dark:text-emerald-400 dark:border-emerald-500/20
+                                    bg-emerald-50 text-emerald-600 border-emerald-200">
                                     <EyeIcon /> Live Preview
                                 </span>
                             )}
+                            <button 
+                                onClick={handleDownloadSingleFile}
+                                className={`p-1.5 rounded-md border transition-all
+                                    dark:bg-white/5 dark:text-slate-400 dark:border-white/10 dark:hover:bg-white/10 dark:hover:text-slate-200
+                                    bg-gray-100 text-slate-500 border-gray-200 hover:bg-gray-200 hover:text-slate-700`}
+                                title="Download File"
+                            >
+                                <DownloadFileIcon />
+                            </button>
                             <button
                                 onClick={handleCopyCode}
                                 className={`flex items-center gap-2 px-3 py-1.5 rounded-md text-xs font-medium border transition-all ${
                                     copyFeedback 
-                                    ? 'bg-emerald-500/10 text-emerald-400 border-emerald-500/20' 
-                                    : 'bg-white/5 text-slate-400 border-white/10 hover:bg-white/10 hover:text-slate-200'
+                                    ? 'bg-emerald-500/10 text-emerald-500 border-emerald-500/20' 
+                                    : 'dark:bg-white/5 dark:text-slate-400 dark:border-white/10 dark:hover:bg-white/10 dark:hover:text-slate-200 bg-gray-100 text-slate-500 border-gray-200 hover:bg-gray-200 hover:text-slate-700'
                                 }`}
                             >
                                 {copyFeedback ? <CheckIcon /> : <CopyIcon />}
                                 {copyFeedback ? 'Copied' : 'Copy'}
                             </button>
-                            <span className="text-[10px] font-mono text-slate-500 uppercase tracking-widest bg-white/5 px-2 py-0.5 rounded">{selectedFile.language || (isImage ? 'IMG' : 'TEXT')}</span>
+                            <span className="text-[10px] font-mono uppercase tracking-widest px-2 py-0.5 rounded
+                                dark:bg-white/5 dark:text-slate-500 
+                                bg-gray-100 text-slate-400">{selectedFile.language || (isImage ? 'IMG' : 'TEXT')}</span>
                         </div>
                       </div>
                       
@@ -616,10 +742,12 @@ function App() {
                            <div className="w-full flex flex-col items-center justify-start py-10 gap-8 overflow-auto">
                               
                               <div className="flex flex-col items-center gap-4">
-                                <p className="text-sm font-medium text-slate-300 uppercase tracking-widest">Icon Preview</p>
+                                <p className="text-sm font-medium dark:text-slate-300 text-slate-600 uppercase tracking-widest">Icon Preview</p>
                                 <div className="relative group">
                                     <div className="absolute -inset-4 bg-indigo-500/20 rounded-full blur-xl opacity-0 group-hover:opacity-100 transition duration-700"></div>
-                                    <div className="relative p-8 bg-white/5 border border-white/10 rounded-xl">
+                                    <div className={`relative p-8 border rounded-xl
+                                        dark:bg-white/5 dark:border-white/10 
+                                        bg-white border-gray-200 shadow-sm`}>
                                         {/* Use localContent so it updates on edit */}
                                         <IconPreview description={localContent} />
                                     </div>
@@ -634,11 +762,13 @@ function App() {
                               </div>
 
                               <div className="w-full max-w-2xl px-6 mt-4">
-                                  <label className="text-xs font-semibold text-slate-500 uppercase tracking-wider mb-2 block">Raw Description</label>
+                                  <label className="text-xs font-semibold dark:text-slate-500 text-slate-400 uppercase tracking-wider mb-2 block">Raw Description</label>
                                   <textarea 
                                       value={localContent}
                                       onChange={(e) => handleContentChange(e.target.value)}
-                                      className="w-full h-24 bg-[#0b0f19] border border-white/10 rounded-lg p-4 font-mono text-xs text-slate-400 focus:border-indigo-500/50 focus:outline-none resize-none"
+                                      className={`w-full h-24 border rounded-lg p-4 font-mono text-xs focus:outline-none resize-none
+                                          dark:bg-[#0b0f19] dark:border-white/10 dark:text-slate-400 dark:focus:border-indigo-500/50
+                                          bg-gray-50 border-gray-200 text-slate-600 focus:border-indigo-500/50`}
                                   />
                               </div>
                            </div>
@@ -646,11 +776,13 @@ function App() {
                            // TEXT / CODE EDITOR VIEW
                            <>
                              {/* Code Editor */}
-                             <div className={`${showPreview ? 'w-1/2 border-r border-white/10' : 'w-full'} h-full flex flex-col`}>
+                             <div className={`${showPreview ? 'w-1/2 border-r dark:border-white/10 border-gray-200' : 'w-full'} h-full flex flex-col`}>
                                  <textarea 
                                     value={localContent}
                                     onChange={(e) => handleContentChange(e.target.value)}
-                                    className="flex-grow w-full h-full bg-[#111827] p-6 font-mono text-[13px] leading-relaxed text-slate-300 resize-none focus:outline-none custom-scrollbar"
+                                    className={`flex-grow w-full h-full p-6 font-mono text-[13px] leading-relaxed resize-none focus:outline-none custom-scrollbar
+                                        dark:bg-[#111827] dark:text-slate-300 
+                                        bg-white text-slate-700`}
                                     spellCheck={false}
                                  />
                              </div>
@@ -678,17 +810,14 @@ function App() {
                 {/* GUIDES VIEW */}
                 {(activeTab === 'testing' || activeTab === 'security') && (
                   <div className="max-w-3xl mx-auto p-12">
-                     <div className="prose prose-invert prose-slate 
-                        [&_h1]:text-2xl [&_h1]:font-bold [&_h1]:mb-6 [&_h1]:text-indigo-100 
-                        [&_h2]:text-xl [&_h2]:font-semibold [&_h2]:mt-8 [&_h2]:mb-4 [&_h2]:text-indigo-200 
-                        [&_h3]:text-lg [&_h3]:font-medium [&_h3]:mt-6 [&_h3]:mb-3 [&_h3]:text-indigo-300
-                        [&_p]:mb-6 [&_p]:leading-7 [&_p]:text-slate-300
-                        [&_ul]:mb-6 [&_ul]:list-disc [&_ul]:pl-5 [&_ul]:space-y-2
-                        [&_li]:mb-2 [&_li]:leading-relaxed
-                        [&_strong]:font-semibold [&_strong]:text-slate-100
-                        [&_code]:bg-[#1f2937] [&_code]:px-1.5 [&_code]:py-0.5 [&_code]:rounded [&_code]:text-indigo-300 [&_code]:font-mono [&_code]:text-sm
-                        [&_pre]:bg-[#1f2937] [&_pre]:p-4 [&_pre]:rounded-lg [&_pre]:border [&_pre]:border-white/10 [&_pre]:overflow-x-auto [&_pre]:mb-6
-                     ">
+                     <div className={`prose prose-slate 
+                        dark:prose-invert
+                        dark:[&_h1]:text-indigo-100 [&_h1]:text-indigo-900
+                        dark:[&_h2]:text-indigo-200 [&_h2]:text-indigo-800
+                        dark:[&_h3]:text-indigo-300 [&_h3]:text-indigo-700
+                        dark:[&_code]:bg-[#1f2937] [&_code]:bg-gray-100 dark:[&_code]:text-indigo-300 [&_code]:text-indigo-600
+                        dark:[&_pre]:bg-[#1f2937] [&_pre]:bg-gray-800 dark:[&_pre]:border-white/10
+                     `}>
                         <Markdown>{activeTab === 'testing' ? result.testing_guide : result.security_review}</Markdown>
                      </div>
                   </div>
@@ -698,20 +827,113 @@ function App() {
           </>
         )}
       </div>
+
+      {/* FEEDBACK PANEL */}
+      <div className={`w-80 flex-shrink-0 border-l transition-colors duration-300 flex flex-col
+         dark:border-white/5 dark:bg-[#111827] bg-white border-gray-200`}>
+         <div className="p-6 border-b dark:border-white/5 border-gray-100">
+             <div className="flex items-center gap-2 mb-2">
+                <span className="p-2 rounded-lg bg-indigo-500/10 text-indigo-500"><svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M8 10h.01M12 10h.01M16 10h.01M9 16H5a2 2 0 01-2-2V6a2 2 0 012-2h14a2 2 0 012 2v8a2 2 0 01-2 2h-5l-5 5v-5z" /></svg></span>
+                <h2 className="text-lg font-bold dark:text-white text-slate-800">Feedback</h2>
+             </div>
+             <p className="text-xs text-slate-500 leading-relaxed">We value your input! Help us improve the Extension Generator.</p>
+         </div>
+         
+         <div className="p-6 flex flex-col gap-6 flex-1 overflow-y-auto custom-scrollbar">
+            {/* Email Input */}
+            <div className="space-y-2">
+                <label className="text-xs font-semibold uppercase tracking-wider dark:text-slate-400 text-slate-500">Your Email</label>
+                <input 
+                    type="email"
+                    value={feedbackEmail}
+                    onChange={(e) => setFeedbackEmail(e.target.value)}
+                    placeholder="name@example.com"
+                    className="w-full px-4 py-3 rounded-lg text-sm transition-all outline-none border focus:ring-2 focus:ring-indigo-500/20
+                    dark:bg-[#1a202c] dark:border-white/10 dark:text-slate-200 dark:focus:border-indigo-500/50 dark:placeholder-slate-600
+                    bg-gray-50 border-gray-200 text-slate-800 focus:border-indigo-500 placeholder-slate-400"
+                />
+            </div>
+
+            {/* Message Input */}
+            <div className="space-y-2">
+                <label className="text-xs font-semibold uppercase tracking-wider dark:text-slate-400 text-slate-500">Message</label>
+                <textarea 
+                    value={feedbackText}
+                    onChange={(e) => setFeedbackText(e.target.value)}
+                    placeholder="Tell us what you think..."
+                    className="w-full h-32 px-4 py-3 rounded-lg text-sm resize-none transition-all outline-none border focus:ring-2 focus:ring-indigo-500/20
+                    dark:bg-[#1a202c] dark:border-white/10 dark:text-slate-200 dark:focus:border-indigo-500/50 dark:placeholder-slate-600
+                    bg-gray-50 border-gray-200 text-slate-800 focus:border-indigo-500 placeholder-slate-400"
+                />
+            </div>
+
+            {/* Sentiment */}
+            <div className="space-y-2">
+                <label className="text-xs font-semibold uppercase tracking-wider dark:text-slate-400 text-slate-500">Experience</label>
+                <div className="grid grid-cols-2 gap-3">
+                    <button 
+                        onClick={() => setFeedbackSentiment('happy')}
+                        className={`p-4 rounded-xl border flex flex-col items-center gap-2 transition-all duration-200 ${
+                            feedbackSentiment === 'happy'
+                            ? 'bg-emerald-500/10 border-emerald-500/50 text-emerald-500 ring-1 ring-emerald-500/50'
+                            : 'dark:bg-[#1a202c] dark:border-white/5 dark:text-slate-500 dark:hover:bg-white/5 bg-gray-50 border-gray-200 text-slate-400 hover:bg-gray-100 hover:text-slate-600'
+                        }`}
+                    >
+                        <SmileIcon />
+                        <span className="text-xs font-bold">Good</span>
+                    </button>
+                    <button 
+                        onClick={() => setFeedbackSentiment('sad')}
+                        className={`p-4 rounded-xl border flex flex-col items-center gap-2 transition-all duration-200 ${
+                            feedbackSentiment === 'sad'
+                            ? 'bg-rose-500/10 border-rose-500/50 text-rose-500 ring-1 ring-rose-500/50'
+                            : 'dark:bg-[#1a202c] dark:border-white/5 dark:text-slate-500 dark:hover:bg-white/5 bg-gray-50 border-gray-200 text-slate-400 hover:bg-gray-100 hover:text-slate-600'
+                        }`}
+                    >
+                        <SadIcon />
+                        <span className="text-xs font-bold">Bad</span>
+                    </button>
+                </div>
+            </div>
+
+            {/* Submit */}
+            <button
+                onClick={handleSendFeedback}
+                disabled={feedbackStatus !== 'idle'}
+                className={`w-full py-3.5 rounded-lg font-bold text-sm shadow-lg flex items-center justify-center gap-2 transition-all
+                    ${feedbackStatus === 'sent' 
+                        ? 'bg-emerald-500 text-white' 
+                        : 'bg-indigo-600 hover:bg-indigo-500 text-white hover:shadow-indigo-500/25 active:scale-[0.98]'
+                    }
+                    ${feedbackStatus === 'sending' ? 'opacity-70 cursor-wait' : ''}
+                `}
+            >
+                {feedbackStatus === 'idle' && (
+                    <>Send Feedback <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M14 5l7 7m0 0l-7 7m7-7H3" /></svg></>
+                )}
+                {feedbackStatus === 'sending' && (
+                    <>Sending...</>
+                )}
+                {feedbackStatus === 'sent' && (
+                    <>Sent! <CheckIcon /></>
+                )}
+            </button>
+         </div>
+      </div>
     </div>
   );
 }
 
 // --- Helper Components & Functions ---
 
-function TabButton({ active, onClick, label, icon }: { active: boolean, onClick: () => void, label: string, icon: React.ReactNode }) {
+function TabButton({ active, onClick, label, icon, isDark }: { active: boolean, onClick: () => void, label: string, icon: React.ReactNode, isDark: boolean }) {
   return (
     <button
       onClick={onClick}
       className={`relative px-4 py-2 text-xs font-medium transition-all duration-200 rounded-md flex items-center gap-2 ${
         active 
-        ? 'text-white bg-white/10 shadow-sm' 
-        : 'text-slate-500 hover:text-slate-300 hover:bg-white/5'
+        ? 'dark:text-white dark:bg-white/10 dark:shadow-sm text-indigo-600 bg-indigo-50 shadow-sm' 
+        : 'dark:text-slate-500 dark:hover:text-slate-300 dark:hover:bg-white/5 text-slate-500 hover:text-slate-800 hover:bg-gray-100'
       }`}
     >
       {icon}
@@ -762,13 +984,15 @@ function IconEditor({ description, onUpdate }: { description: string, onUpdate: 
     }
 
     return (
-        <div className="bg-[#1a202c] rounded-lg border border-white/5 p-4 flex flex-col gap-4">
-            <h3 className="text-xs font-semibold text-indigo-400 uppercase tracking-wider">Theme Colors</h3>
+        <div className={`rounded-lg border p-4 flex flex-col gap-4
+            dark:bg-[#1a202c] dark:border-white/5 
+            bg-white border-gray-200 shadow-sm`}>
+            <h3 className="text-xs font-semibold dark:text-indigo-400 text-indigo-600 uppercase tracking-wider">Theme Colors</h3>
             
             <div className="flex flex-col gap-3">
                 <div className="flex items-center justify-between">
-                    <span className="text-xs text-slate-400">Background Gradient</span>
-                    <button onClick={addBgColor} className="text-[10px] bg-white/5 hover:bg-white/10 px-2 py-0.5 rounded text-slate-300">+ Add Stop</button>
+                    <span className="text-xs dark:text-slate-400 text-slate-500">Background Gradient</span>
+                    <button onClick={addBgColor} className="text-[10px] dark:bg-white/5 dark:hover:bg-white/10 dark:text-slate-300 bg-gray-100 hover:bg-gray-200 text-slate-600 px-2 py-0.5 rounded">+ Add Stop</button>
                 </div>
                 <div className="flex flex-wrap gap-2">
                     {bgColors.map((color, i) => (
@@ -779,7 +1003,7 @@ function IconEditor({ description, onUpdate }: { description: string, onUpdate: 
                                 onChange={(e) => updateColor('bg', i, e.target.value)}
                                 className="w-10 h-10 rounded cursor-pointer border-0 p-0 bg-transparent" 
                              />
-                             <span className="text-[10px] font-mono text-slate-500">{color}</span>
+                             <span className="text-[10px] font-mono dark:text-slate-500 text-slate-400">{color}</span>
                              {bgColors.length > 1 && (
                                 <button onClick={() => removeBgColor(i)} className="absolute -top-1 -right-1 bg-red-500 text-white w-4 h-4 rounded-full flex items-center justify-center text-[10px] opacity-0 group-hover:opacity-100 transition-opacity">×</button>
                              )}
@@ -788,10 +1012,10 @@ function IconEditor({ description, onUpdate }: { description: string, onUpdate: 
                 </div>
             </div>
 
-            <div className="h-px bg-white/5 w-full"></div>
+            <div className="h-px dark:bg-white/5 bg-gray-200 w-full"></div>
 
             <div className="flex flex-col gap-3">
-                <span className="text-xs text-slate-400">Foreground (Text/Symbol)</span>
+                <span className="text-xs dark:text-slate-400 text-slate-500">Foreground (Text/Symbol)</span>
                 <div className="flex flex-col items-start gap-1">
                         <input 
                         type="color" 
@@ -799,7 +1023,7 @@ function IconEditor({ description, onUpdate }: { description: string, onUpdate: 
                         onChange={(e) => updateColor('fg', 0, e.target.value)}
                         className="w-10 h-10 rounded cursor-pointer border-0 p-0 bg-transparent" 
                         />
-                        <span className="text-[10px] font-mono text-slate-500">{fgColor}</span>
+                        <span className="text-[10px] font-mono dark:text-slate-500 text-slate-400">{fgColor}</span>
                 </div>
             </div>
         </div>
